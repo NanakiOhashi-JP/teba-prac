@@ -118,7 +118,7 @@ REPEAT{
 { $b:_B_ST } => { $b:B_ST }
 { $e:_E_ST } => { $e:E_ST }
 
-# 制御分の置き換え
+# 制御文の置き換え
 { $re:/RE_(IF|WHILE|FOR)/ $sp:@SP ($:B_P $cond:@ANY $:E_P) }
 => { $re $sp $cond }
 
