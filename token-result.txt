@@ -1,0 +1,46 @@
+UNIT_BEGIN	<>
+IDN	<TEST>
+SP_B	< >
+RE_IF	<if>
+SP_B	< >
+IDN	<If>
+SP_B	< >
+IDN	<iT>
+SP_B	< >
+IDN	<i9>
+SP_B	< >
+NUM	<1>
+IDN	<t>
+SP_B	< >
+OP	<=>
+OP	<<=>
+OP	<==>
+OP	<=>
+OP	<>=>
+SP_B	< >
+RE_ELSE	<else>
+SP_B	< >
+P_L #B0001	<(>
+NUM	<23042>
+OP	<*>
+P_L #B0002	<(>
+NUM	<4139>
+OP	<+>
+NUM	<4113>
+P_R #B0002	<)>
+P_R #B0001	<)>
+SC	<;>
+SP_B	< >
+C_L #B0003	<{>
+RE_FOR	<for>
+SC	<;>
+RE_WHILE	<while>
+C_R #B0003	<}>
+TYPE	<int>
+OP	</>
+TYPE	<char>
+OP	</>
+TYPE	<double>
+SP_C	<//#>
+SP_NL	<\n>
+UNIT_END	<>

@@ -1,0 +1,17 @@
+
+SP_C /\/\/[^\n]*/
+RE_IF /if\b/
+RE_ELSE /else\b/
+RE_WHILE /while\b/
+RE_FOR /for\b/
+TYPE /int\b|char\b|double\b/
+C_L /\{/
+C_R /\}/
+P_L /\(/
+P_R /\)/
+OP /<=|>=|==|\+|-|\*|\/|<|>|=/
+IDN /[a-zA-Z][0-9a-zA-Z_]*/
+NUM /[0-9]+(\.[0-9]*)?|\.[0-9]+/
+SC /;/
+SP_B /[ \t]+/
+SP_NL /\n/

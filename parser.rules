@@ -1,0 +1,73 @@
+{ $id:IDN } => { ('':_B_X $id '':_E_X) }
+{ $num:NUM } => { ('':_B_X $num '':_E_X) }
+
+# マクロ
+@ANY => { [ $:/./ ]* }
+@SP => { [ $:/SP_/ ]** }
+@UNARY_OP => { $:OP/[\+-]/ }
+
+# カッコ内の計算
+REPEAT {
+  { ($pl:P_L $any:@ANY $pr:P_R) }
+       => { ('':_B_X   $pl:_XP_L $any $pr:_XP_R   '':_E_X) }
+}
+
+{ $pl:_XP_L } => { $pl:P_L }
+{ $pr:_XP_R } => { $pr:P_R }
+
+# 単項演算子
+{ $e:_E_X $sp:@SP $op:@UNARY_OP }
+=> { ($e:_E_X $sp $op:_OP_BIN) }
+
+{ $op:@UNARY_OP } => { $op:OP_U }
+{ $opbin:_OP_BIN } => { $opbin:OP }
+
+REPEAT{
+{ $opu:OP_U $sp:@SP ($b:_B_X $right:@ANY $e:_E_X) }
+=> { ('':_B_X $opu $sp $b:B_P $right $e:E_P '':_E_X) }
+}
+
+# 二項演算子（＊／）
+{ $op:OP/[\*\/]/ $sp:@SP ($b:_B_X $right:@ANY $e:_E_X) }
+=> { ('':_B_OP $op $sp $b:B_P $right $e:E_P '':_E_OP) }
+
+REPEAT{
+{ ($b:_B_X $left:@ANY $e:_E_X) $sp:@SP ($:_B_OP $right:@ANY $:_E_OP) }
+=> { ('':_B_X $b:B_P $left $e:E_P $sp $right '':_E_X) }
+}
+
+# 二項演算子（＋ー）
+{ $op:OP/[\+-]/ $sp:@SP ($b:_B_X $right:@ANY $e:_E_X) }
+=> { ('':_B_OP $op $sp $b:B_P $right $e:E_P '':_E_OP) }
+
+REPEAT{
+{ ($b:_B_X $left:@ANY $e:_E_X) $sp:@SP ($:_B_OP $right:@ANY $:_E_OP) }
+=> { ('':_B_X $b:B_P $left $e:E_P $sp $right '':_E_X) }
+}
+
+# 二項演算子（< <= > >= ==）
+{ $op:OP/[<>]=?|==/ $sp:@SP ($b:_B_X $right:@ANY $e:_E_X) }
+=> { ('':_B_OP $op $sp $b:B_P $right $e:E_P '':_E_OP) }
+
+REPEAT{
+{ ($b:_B_X $left:@ANY $e:_E_X) $sp:@SP ($:_B_OP $right:@ANY $:_E_OP) }
+=> { ('':_B_X $b:B_P $left $e:E_P $sp $right '':_E_X) }
+}
+
+
+# 二項演算子（右結合）
+{ ($b:_B_X $left:@ANY $e:_E_X) $sp:@SP $op:OP/=/ }
+=> { ('':_B_OP $b:B_P $left $e:E_P $sp $op '':_E_OP) }
+
+REPEAT{
+{ ($:_B_OP $left:@ANY $:_E_OP) $sp:@SP ($b:_B_X $right:@ANY $e:_E_X) }
+=> { ('':_B_X $left $sp $b:B_P $right $e:E_P '':_E_X) }
+}
+
+# _B_Xと_E_Xを置換
+{ $b:_B_X } => { $b:B_P }
+{ $e:_E_X } => { $e:E_P }
+
+# 式文の識別
+{ [est: ($b:B_P $expr:@ANY $e:E_P) $sp:@SP $sc:SC] }
+=> { ('':_B_ST $est '':_E_ST) }

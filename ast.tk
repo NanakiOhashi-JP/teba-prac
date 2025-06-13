@@ -1,0 +1,51 @@
+UNIT_BEGIN	<>
+_B_X #X0019	<>
+B_P #X0018	<>
+B_P #X0015	<>
+B_P #X0001	<>
+IDN	<x>
+E_P #X0001	<>
+OP	<=>
+B_P #X0014	<>
+B_P #X0002	<>
+IDN	<nanzan>
+E_P #X0002	<>
+OP	<=>
+B_P #X0003	<>
+NUM	<4750>
+E_P #X0003	<>
+E_P #X0014	<>
+E_P #X0015	<>
+SP_B	< >
+OP	<+>
+SP_B	< >
+B_P #X0011	<>
+B_P #X0010	<>
+B_P #X0004	<>
+NUM	<4776>
+E_P #X0004	<>
+SP_B	< >
+OP	<*>
+SP_B	< >
+B_P #X0005	<>
+NUM	<7741>
+E_P #X0005	<>
+E_P #X0010	<>
+SP_B	< >
+OP	</>
+SP_B	< >
+B_P #X0006	<>
+NUM	<1000>
+E_P #X0006	<>
+E_P #X0011	<>
+E_P #X0018	<>
+SP_B	< >
+OP	<->
+SP_B	< >
+B_P #X0007	<>
+NUM	<1>
+E_P #X0007	<>
+_E_X #X0019	<>
+SP_C	<//18813>
+SP_NL	<\n>
+UNIT_END	<>
