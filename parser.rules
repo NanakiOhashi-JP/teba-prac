@@ -68,6 +68,60 @@ REPEAT{
 { $b:_B_X } => { $b:B_P }
 { $e:_E_X } => { $e:E_P }
 
+# SC型の置き換え(for文)
+CONTEXT {
+  $:RE_FOR $:@SP ($:B_P ( $:@ANY ) $:E_P) 
+}{ 
+  { $sc:SC } => { $sc:FSC }
+}
+
 # 式文の識別
 { [est: ($b:B_P $expr:@ANY $e:E_P) $sp:@SP $sc:SC] }
 => { ('':_B_ST $est '':_E_ST) }
+
+# 複合文の識別
+REPEAT{
+{ $cl:C_L $any:@ANY $cr:C_R }
+=> { ('':_B_ST $cl:_XC_L $any $cr:_XC_R '':_E_ST) }
+}
+
+{ $cl:_XC_L } => { $cl:C_L }
+{ $cr:_XC_R } => { $cr:C_R }
+
+
+REPEAT{
+
+# if文
+## 1. if節 
+{ [if: $:RE_IF $:@SP ($:B_P $:@ANY $:E_P) $:@SP] ($b:_B_ST $any:@ANY $e:_E_ST) }
+=> { ('':_B_IF $if ($b:B_ST $any $e:E_ST) '':_E_IF) }
+## 2. else節
+{ [else: $:RE_ELSE $:@SP] ($b:_B_ST $any:@ANY $e:_E_ST) }
+=> { ('':_B_EL $else ($b:B_ST $any $e:E_ST) '':_E_EL) }
+## 3. if文の認識
+{ ($:_B_IF $iany:@ANY $:_E_IF) $sp:@SP ($:_B_EL $eany:@ANY $:_E_EL) }
+=> { ('':_B_ST $iany $sp $eany '':_E_ST) }
+## 4. elseマッチング
+{ ($:_B_IF $ifany:@ANY $:_E_IF) $sp:@SP [end: [: $:RE_ELSE ]! | $:@ANY ] }
+=> { ('':_B_ST $ifany '':_E_ST) $sp $end }
+
+# while文
+{ [while: $:RE_WHILE $:@SP ($:B_P $:@ANY $:E_P) $:@SP] ($b:_B_ST $any:@ANY $e:_E_ST) }
+=> { ('':_B_ST $while ($b:B_ST $any $e:E_ST) '':_E_ST) }
+
+# for文
+{ [for: $:RE_FOR $:@SP ($:B_P $:@ANY $:E_P) $:@SP] ($b:_B_ST $any:@ANY $e:_E_ST) }
+=> { ('':_B_ST $for ($b:B_ST $any $e:E_ST) '':_E_ST) }
+}
+
+# _B_STと_E_STの置き換え
+{ $b:_B_ST } => { $b:B_ST }
+{ $e:_E_ST } => { $e:E_ST }
+
+# 制御分の置き換え
+{ $re:/RE_(IF|WHILE|FOR)/ $sp:@SP ($:B_P $cond:@ANY $:E_P) }
+=> { $re $sp $cond }
+
+# 変数宣言
+{ [type: $type:TYPE $:@SP] ($:B_ST $var:@ANY $:E_ST) }
+=> { ('':B_DE $type $var '':E_DE) }
